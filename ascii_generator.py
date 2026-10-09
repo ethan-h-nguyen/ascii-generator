@@ -85,36 +85,33 @@ if __name__ == "__main__":
             
             asciiArt = generateAscii(grayscale_frame, args.width)
             text_lines = ascii_to_text(asciiArt).split('\n')
-            current_height = len(text_lines)
+            frame_height = len(text_lines)
             
             if frame_idx > 0:
-                if prev_height is not None and current_height < prev_height:
-                    for _ in range(prev_height - current_height):
-                        print()
+                sys.stdout.write(f'\033[{frame_height}A')
+                sys.stdout.write('\r')
                 
-                cursor_y += current_height
+                for line in text_lines:
+                    sys.stdout.write('\033[2K')
+                    sys.stdout.write(line)
+                    sys.stdout.write('\n')
+                    sys.stdout.flush()
                 
-                for i in range(current_height):
-                    sys.stdout.write(f'\033[{cursor_y + i}.{i+1}H{text_lines[i]}')
-                    if i < current_height - 1:
-                        sys.stdout.flush()
-                
-                prev_height = current_height
-            
             else:
                 for line in text_lines:
                     sys.stdout.write(line)
+                    sys.stdout.write('\n')
                     sys.stdout.flush()
-                cursor_y += current_height
-                prev_height = current_height
             
-            sys.stdout.flush()
+            cursor_y += frame_height
+            prev_height = frame_height
             
             if frame_idx < n_frames - 1:
                 duration_ms = pil_img.info.get('duration', 0)
                 if duration_ms:
                     import time
                     time.sleep(min(duration_ms / 1000.0, 5))
+        print()
     else:
         asciiArt = generateAscii(img, args.width)
         text = ascii_to_text(asciiArt)
