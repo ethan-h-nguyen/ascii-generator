@@ -5,3 +5,20 @@ venv/
 .env
 .DS_Store
 *:Zone.Identifier
+
+# Portfolio video tooling/output
+brag-output/
+generate_video.py
+
+# Local GIF test assets
+assets/black_hole.gif
+assets/blackhole2.gif
+assets/cat.gif
+assets/crows.gif
+assets/eyes.gif
+assets/fire.gif
+assets/gachi.gif
+assets/hood.gif
+assets/jester.gif
+assets/man.gif
+assets/water.gif
