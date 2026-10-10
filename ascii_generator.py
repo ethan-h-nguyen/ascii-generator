@@ -2,11 +2,7 @@ import cv2
 import numpy as np
 
 symbols = [
-    "$", "@", "B", "%", "8", "&", "W", "M", "#", "*", "o", "a", "h", "k", "b", "d", 
-    "p", "q", "w", "m", "Z", "O", "0", "Q", "L", "C", "J", "U", "Y", "X", "z", "c", 
-    "v", "u", "n", "x", "r", "j", "f", "t", "/", "\\", "|", "(", ")", "1", "{", "}", 
-    "[", "]", "?", "-", "_", "+", "~", "<", ">", "i", "!", "l", "I", ";", ":", ",", 
-    "\"", "^", "`", "'", "."
+    "⣿", "⣾", "⣶", "⣦", "⣤", "⣄", "⣀", "⡀", " "
 ]
 
 symbols.reverse()
@@ -19,8 +15,8 @@ def ascii_to_text(array):
 def generateAscii(grayscale_img, target_width=None):
     if target_width is None:
         height, width = grayscale_img.shape
-        newWidth = int(width / 5.5)
-        newHeight = int(height / 9.5)
+        newWidth = int(width)
+        newHeight = int(height)
     else:
         newWidth = target_width
         newHeight = int(newWidth * (grayscale_img.shape[0] / grayscale_img.shape[1]) * (5.5 / 9.5))
@@ -74,44 +70,54 @@ if __name__ == "__main__":
         import signal
         signal.signal(signal.SIGINT, lambda sig, frame: sys.exit(0))
         
-        cursor_y = 0
-        prev_height = None
-        
-        for frame_idx in range(n_frames):
-            pil_img.seek(frame_idx)
-            rgb_img = pil_img.convert('RGB')
-            
-            grayscale_frame = cv2.cvtColor(np.array(rgb_img), cv2.COLOR_RGB2GRAY)
-            
-            asciiArt = generateAscii(grayscale_frame, args.width)
-            text_lines = ascii_to_text(asciiArt).split('\n')
-            frame_height = len(text_lines)
-            
-            if frame_idx > 0:
-                sys.stdout.write(f'\033[{frame_height}A')
-                sys.stdout.write('\r')
+        frame_height = 0
+
+        pil_img.seek(0)
+        rgb_frame = pil_img.convert('RGB')
+        grayscale_init = cv2.cvtColor(np.array(rgb_frame), cv2.COLOR_RGB2GRAY)
+        asciiArtInit = generateAscii(grayscale_init, args.width)
+        text_lines_init = ascii_to_text(asciiArtInit).splitlines()
+        frame_height = len(text_lines_init)
+
+        for _ in range(frame_height):
+            sys.stdout.write('\n')
+
+        if frame_height > 0:
+            sys.stdout.write(f'\033[{frame_height}A')
+
+        sys.stdout.flush()
+
+        while True:
+            for frame_idx in range(n_frames):
+                pil_img.seek(frame_idx)
+                rgb_img = pil_img.convert('RGB')
                 
-                for line in text_lines:
-                    sys.stdout.write('\033[2K')
-                    sys.stdout.write(line)
-                    sys.stdout.write('\n')
-                    sys.stdout.flush()
+                grayscale_frame = cv2.cvtColor(np.array(rgb_img), cv2.COLOR_RGB2GRAY)
                 
-            else:
-                for line in text_lines:
-                    sys.stdout.write(line)
-                    sys.stdout.write('\n')
-                    sys.stdout.flush()
-            
-            cursor_y += frame_height
-            prev_height = frame_height
-            
-            if frame_idx < n_frames - 1:
+                asciiArt = generateAscii(grayscale_frame, args.width)
+                text_lines = ascii_to_text(asciiArt).splitlines()
+
+                for index in range(frame_height):
+                    sys.stdout.write('\r\033[2K')
+
+                    if index < len(text_lines):
+                        sys.stdout.write(text_lines[index])
+
+                    if index < frame_height - 1:
+                        sys.stdout.write('\n')
+
+                sys.stdout.flush()
+
                 duration_ms = pil_img.info.get('duration', 0)
                 if duration_ms:
                     import time
-                    time.sleep(min(duration_ms / 1000.0, 5))
-        print()
+                    time.sleep(min(duration_ms / 750.0, 5))
+
+                if frame_height > 1:
+                    sys.stdout.write(f'\033[{frame_height - 1}A')
+                    sys.stdout.write('\r')
+                    sys.stdout.flush()
+
     else:
         asciiArt = generateAscii(img, args.width)
         text = ascii_to_text(asciiArt)
