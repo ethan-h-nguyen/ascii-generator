@@ -3,11 +3,12 @@
 A Python CLI tool that converts static images, animated GIFs, and live webcam feeds into Unicode ASCII art with multiple visual styles and export capabilities.
 
 <p align="center">
-  <a href="brag-output/brag.mp4">
-    <img src="brag-output/brag.jpg" alt="ASCII Generator Launch Demo" width="900" style="border-radius: 8px;">
-  </a>
+  <video width="800" controls>
+    <source src="brag-output/brag.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
   <br>
-  <em>🎬 <b>Watch the Launch Demo (20s)</b>: <a href="brag-output/brag.mp4"><b>brag-output/brag.mp4</b></a> — Real-time terminal morphing, webcam tracking, and animated GIF exports.</em>
+  <em>🎬 <b>Watch the Launch Demo (20s)</b>: <a href="brag-output/brag.mp4"><b>brag-output/brag.mp4</b></a> — Real‑time terminal morphing, webcam tracking, and animated GIF exports.</em>
 </p>
 
 ## Features
