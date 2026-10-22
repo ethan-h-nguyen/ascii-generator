@@ -1,0 +1,3 @@
+ASCII Generator turns images, GIFs, and live webcam feeds into Unicode terminal art with 4 visual styles and GIF export. Real-time rendering, cross-platform fonts, and animated exports — all from the command line.
+
+github.com/ehn77/ascii-generator

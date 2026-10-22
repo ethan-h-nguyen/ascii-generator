@@ -7,7 +7,7 @@ venv/
 *:Zone.Identifier
 
 # Portfolio video tooling/output
-brag-output/
+brag-output/work/
 generate_video.py
 
 # Local GIF test assets
