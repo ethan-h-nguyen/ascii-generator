@@ -4,7 +4,7 @@ A Python CLI tool that converts static images, animated GIFs, and live webcam fe
 
 <p align="center">
   <a href="assets/demo.mp4">
-    <img src="assets/consider.jpg" alt="ASCII Generator Demo" width="800">
+    <img src="assets/demo.gif" alt="ASCII Generator Demo" width="800">
   </a>
 </p>
 <p align="center">
